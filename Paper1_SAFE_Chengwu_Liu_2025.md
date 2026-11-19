@@ -65,7 +65,7 @@ Systems such as Lean 4 provide formal verification of mathematical propositions 
 ### Formalization with LLMs
 Prior work explores translating natural-language mathematics into formal statements and proofs.
 
-The paper combines retrospective step verification with formal theorem proving and reasoning-trajectory selection.
+The paper combines three approaches: checking the AI's reasoning steps after generation, using formal mathematical methods to verify proofs, and selecting the most reliable reasoning path among multiple alternatives.
 
 ---
 
@@ -73,11 +73,13 @@ The paper combines retrospective step verification with formal theorem proving a
 
 The paper identifies limitations in existing verification approaches:
 
-1. PRMs generally provide learned scores rather than formal proof certificates.
-2. Self-consistency can select answers without identifying which reasoning steps are incorrect.
-3. Opaque verification scores provide limited interpretability.
-4. Mathematical hallucinations in intermediate steps can propagate into later reasoning.
-5. Existing formal verification approaches do not fully integrate step-level formal evidence into the selection of natural-language reasoning trajectories.
+1. Automated Theorem Proving has made significant improvements but has difficulty in finding correct proofs for complex problems, and computational cost remains a challenge. In simple language, even if we give AI better mathematical knowledge and more opportunities to try different solutions, it still struggles with difficult mathematical proofs, and finding those proofs can be very expensive.
+2. Auto-formalisation primarily focuses on the formalisation of mathematical statements rather than their proofs.
+3. PRMs generally provide learned scores rather than formal proof certificates.
+4. Self-consistency can select answers without identifying which reasoning steps are incorrect.
+5. Opaque verification scores provide limited interpretability.
+6. Mathematical hallucinations in intermediate steps can propagate into later reasoning.
+7. Existing formal verification approaches do not fully integrate step-level formal evidence into the selection of natural-language reasoning trajectories.
 
 The key gap is **the lack of interpretable, evidence-based verification of generated reasoning steps within a practical inference-time reasoning framework**.
 
