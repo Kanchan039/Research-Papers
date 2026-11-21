@@ -387,20 +387,16 @@ The paper improves empirical mathematical reasoning performance but does not est
 
 ## 14. MY QUESTIONS
 
-1. What exactly are the four step-verification states used in Safe?
-2. How does Safe generate the Lean formalization of a natural-language reasoning step?
-3. What happens when a step cannot be formalized?
-4. Does Safe verify each step independently or preserve dependencies?
-5. How are the step-level verification states aggregated into a retrospective score?
-6. What is the exact equation for combining retrospective verification and PRM scores?
-7. How does Safe handle incorrect formalizations that Lean successfully proves?
-8. How is the FormalStep dataset constructed?
-9. What is the difference between theorem proving accuracy and natural-language step correctness?
-10. Can Safe provide a soundness guarantee for the entire reasoning trajectory?
-11. How much improvement comes from formal verification versus additional sampling?
-12. Can the framework be adapted to mathematical proofs generated directly in Lean?
-13. Can the verification process be calibrated probabilistically?
-14. Can a formal proof certificate be attached to every mathematical claim in a response?
+1. What exactly are the four step-verification states used in Safe? :- a. No verification is required. b. failed formalization, which may result from either the limitations of Lean 4 language or the constraints of our auto-formalization pipeline. c. successful formalization accompained by a proof of the statement. d. successful formalization, but with a failure in theorem proving 
+2. How does Safe generate the Lean formalization of a natural-language reasoning step? Autoformalization, LLM in context learning, then the generated statement is passed through Lean read-eval-print-loop enviroment for the validation
+3. What happens when a step cannot be formalized? we have the step verification state b, but what exactly happens like what they have proposed is not mentioned.
+4. Does Safe verify each step independently or preserve dependencies? not exactly clear from the paper, but it mentions about parallel verification to minimize end-to-end latency, but also talks about LSTM model for state dependencies, not the step dependencies
+5. How are the step-level verification states aggregated into a retrospective score? using sigmoid function on linear regression eq. using LSTM aggregator
+6. What is the exact equation for combining retrospective verification and PRM scores? scorei_retro ** alpha . scorei_pro ** (1-alpha)
+7. How does Safe handle incorrect formalizations that Lean successfully proves? uses LLM as a judge for evaluating the formalization to match original natural langugae, then it passes through Lean
+8. How is the FormalStep dataset constructed? FormalStep was constructed by randomly selecting 500 training problems from MATH, generating reasoning trajectories using Llama 3.1, and auto-formalizing their steps into Lean theorems. The resulting 30,809 formalized theorems were collected into a benchmark to evaluate step-level theorem-proving correctness.
+9. What is the difference between theorem proving accuracy and natural-language step correctness? theorem proving accuracy is how many theorems are proved out of all, and natural language step correctness measures the correctness of formalization.
+10. Can Safe provide a soundness guarantee for the entire reasoning trajectory? not a guarantee, we are using scores not any mathematical formula.
 
 ---
 
@@ -422,46 +418,9 @@ Potential approach:
 - Measure disagreement.
 - Estimate formalization uncertainty.
 
-### Idea 2: End-to-end mathematical reliability
 
-Define the reliability of a mathematical answer in terms of:
 
-- Natural-language interpretation.
-- Formalization correctness.
-- Proof correctness.
-- Assumption validity.
-- Dependency correctness.
-- Final answer extraction.
-
-Research question:
-
-Can we derive an end-to-end reliability framework from these components?
-
-### Idea 3: Proof certificates for LLM responses
-
-For each mathematical claim, produce:
-
-- Natural-language claim.
-- Formal proposition.
-- Lean proof.
-- Explicit assumptions.
-- Verification result.
-- Formalization confidence or validation evidence.
-
-### Idea 4: Mathematical reliability score
-
-Develop a reliability score that distinguishes:
-
-- Formally verified claims.
-- Unverified claims.
-- Failed proof attempts.
-- Incorrect formalizations.
-- Unsupported assumptions.
-- Contradictory steps.
-
-Investigate whether such a score can be calibrated against actual correctness.
-
-### Idea 5: Dependency-aware verification
+### Idea 2: Dependency-aware verification
 
 Represent reasoning as a directed graph:
 
@@ -475,7 +434,7 @@ Research question:
 
 Can dependency-aware formal verification detect errors that isolated step verification misses?
 
-### Idea 6: Soundness of the overall pipeline
+### Idea 3: Soundness of the overall pipeline
 
 Lean proof checking is sound relative to its trusted kernel and assumptions.
 
@@ -493,7 +452,7 @@ A possible research direction:
 
 Potential objective:
 
-Develop a framework in which mathematical claims are translated into formal propositions, verified using Lean, and accompanied by explicit assumptions and reliability information. Like a system which take Question and answer of LLM as input, system generates the formal representation that canbe used by Lean to verify, and then Lean verifies the correctness of the LLM answer. That's how we will have a sysytem which tell that the LLM generated answers are right or not matghematically.
+Develop a framework in which claims are translated into formal propositions, verified using Lean, and accompanied by explicit assumptions and reliability information. Like a system which takes the question and answer of an LLM as input, the system generates the formal representation that can be used by Lean to verify, and then Lean verifies the correctness of the LLM answer. That's how we will have a system that tells whether the LLM-generated answers are mathematically correct.
 
 ---
 
@@ -529,25 +488,3 @@ Develop a framework in which mathematical claims are translated into formal prop
 Avigad et al. (2021) — work on formal proof and the role of proof assistants in mathematics.
 
 ---
-
-## RESEARCH CONNECTION
-
-**My research interest:** Mathematical foundations for the reliability of LLM-generated reasoning.
-
-**Potential research question:**
-
-Can we construct a mathematically rigorous framework to establish the reliability of an LLM-generated answer using formal verification, semantic fidelity, and explicit assumptions?
-
-Safe is a foundational reference because it demonstrates how Lean 4 can be integrated into the retrospective verification of intermediate reasoning steps.
-
-A potential extension is to move from:
-
-**Verified formal statements**
-
-to:
-
-**Verified natural-language claims**
-
-to:
-
-**End-to-end reliability guarantees for mathematical reasoning**.
