@@ -351,13 +351,9 @@ Additional methodological considerations:
 
 3. **Automatic Cluster Discovery:** Develop methods that infer the number of distinct viewpoints automatically instead of providing the ground-truth \(k\).
 
-4. **Claim-level Verification:** Extract individual claims from documents and identify whether they are supporting, contradicting, or unrelated to one another.
+4. **Uncertainty Estimation:** Allow the model to express uncertainty when the retrieved sources do not provide sufficient evidence to resolve a disagreement.
 
-5. **Evidence-grounded Reasoning:** Require every generated answer and explanation to be linked to specific document passages.
-
-6. **Uncertainty Estimation:** Allow the model to express uncertainty when the retrieved sources do not provide sufficient evidence to resolve a disagreement.
-
-7. **Formal and Logical Reasoning:** Explore whether logical representations of claims and their relationships can improve contradiction detection and reasoning reliability.
+5. **Formal and Logical Reasoning:** Explore whether logical representations of claims and their relationships can improve contradiction detection and reasoning reliability. See if SAFE paper can be incorporated for this.
 
 ## 16. IMPORTANT REFERENCES
 
